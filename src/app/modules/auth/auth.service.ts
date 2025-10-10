@@ -1,8 +1,8 @@
 import { UserStatus } from "@prisma/client"
 import { prisma } from "../../shared/prisma"
 import bcrypt from "bcryptjs"
-import jwt, { SignOptions } from "jsonwebtoken"
 import config from "../../../config"
+import generateToken from "../../helpers/generateToken"
 const login = async(payload:{email: string, password: string})=>{
 const user = await prisma.user.findUniqueOrThrow({
     where: {
@@ -17,12 +17,12 @@ if(!isCorrectPassword){
 // if(!config.jwt_secret){
 //     throw new Error("Jwt secret is not configured")
 // }
-const accessToken = jwt.sign({email: user.email, role: user.role}, config.jwt_secret as string, {expiresIn: config.jwt_access_expires} as SignOptions)
-const RefreshToken = jwt.sign({email: user.email, role: user.role}, config.jwt_secret as string, {expiresIn: config.jwt_refresh_expires} as SignOptions)
+const accessToken = generateToken({email: user.email, role: user.role}, config.jwt_secret as string, config.jwt_access_expires as string )
+const refreshToken = generateToken({email: user.email, role: user.role}, config.jwt_secret as string, config.jwt_refresh_expires as string)
 return{
     user,
     accessToken,
-    RefreshToken
+    refreshToken
 }
 
 }
