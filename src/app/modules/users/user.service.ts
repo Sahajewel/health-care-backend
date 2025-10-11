@@ -2,6 +2,8 @@ import { Request } from "express";
 import { prisma } from "../../shared/prisma";
 import bcryptjs from "bcryptjs"
 import { fileUploader } from "../../helpers/fileUploader";
+import { UserRole } from "@prisma/client";
+
 const createPatient = async(req: Request)=>{
     if(req.file){
       const uploadImage =   await fileUploader.uploadToCloudinary(req.file)
@@ -23,6 +25,52 @@ const createPatient = async(req: Request)=>{
    return result
 }
 
+const createDoctor = async(req: Request)=>{
+    if(req.file){
+        const uploadImage = await fileUploader.uploadToCloudinary(req.file)
+        req.body.doctor.profilePhoto = uploadImage?.secure_url
+    }
+    const hashPassword = await bcryptjs.hash(req.body.password,10)
+    const result = await prisma.$transaction(async(tnx)=>{
+        const user = await tnx.user.create({
+            data:{
+                email: req.body.doctor.email,
+                password: hashPassword,
+                role: UserRole.DOCTOR
+            }
+        })
+        const doctor = await tnx.doctor.create({
+            data: req.body.doctor
+        })
+        return{
+            user, doctor
+        }
+    })
+    return result
+}
+const createAdmin = async(req: Request)=>{
+    if(req.file){
+        const uploadImage = await fileUploader.uploadToCloudinary(req.file)
+        req.body.admin.profilePhoto = uploadImage?.secure_url
+    }
+    const hashPassword = await bcryptjs.hash(req.body.password,10)
+    const result = await prisma.$transaction(async(tnx)=>{
+        const user = await tnx.user.create({
+            data:{
+                email: req.body.admin.email,
+                password: hashPassword,
+                role: UserRole.ADMIN
+            }
+        })
+        const admin = await tnx.admin.create({
+            data: req.body.admin
+        })
+        return{user, admin}
+    })
+    return result
+}
 export const UserService = {
-    createPatient
+    createPatient,
+    createDoctor,
+    createAdmin
 }
