@@ -17,4 +17,5 @@ router.post("/create-admin", fileUploader.upload.single('file'), (req:Request, r
     req.body = UserValidation.createAdminValidationSchema.parse(JSON.parse(req.body.data))
     return UserControllers.createAdmin(req, res, next)
 })
+router.get("/", UserControllers.getAllUsers)
 export const UserRoutes = router

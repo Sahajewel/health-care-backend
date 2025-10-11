@@ -3,6 +3,7 @@ import { prisma } from "../../shared/prisma";
 import bcryptjs from "bcryptjs"
 import { fileUploader } from "../../helpers/fileUploader";
 import { UserRole } from "@prisma/client";
+import sendResponse from "../../shared/sendResponse";
 
 const createPatient = async(req: Request)=>{
     if(req.file){
@@ -69,8 +70,13 @@ const createAdmin = async(req: Request)=>{
     })
     return result
 }
+const getAllUsers = async()=>{
+    const allUsers = await prisma.user.findMany();
+   return allUsers
+}
 export const UserService = {
     createPatient,
     createDoctor,
-    createAdmin
+    createAdmin,
+    getAllUsers
 }
