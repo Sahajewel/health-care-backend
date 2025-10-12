@@ -2,6 +2,8 @@ import express, { NextFunction, Request, Response } from 'express'
 import { UserControllers } from './user.controllers';
 import { UserValidation } from './user.validation';
 import { fileUploader } from '../../helpers/fileUploader';
+import auth from '../../middlewares/auth';
+import { UserRole } from '@prisma/client';
 const router = express.Router();
 
 router.post("/create-patient",fileUploader.upload.single('file'),(req: Request, res: Response, next: NextFunction)=>{
@@ -9,13 +11,13 @@ router.post("/create-patient",fileUploader.upload.single('file'),(req: Request, 
     return UserControllers.createPatient(req, res,next)
 }
 )
-router.post("/create-doctor", fileUploader.upload.single('file'), (req:Request, res:Response, next: NextFunction)=>{
+router.post("/create-doctor",auth(UserRole.ADMIN), fileUploader.upload.single('file'), (req:Request, res:Response, next: NextFunction)=>{
     req.body = UserValidation.createDoctorValidationSchema.parse(JSON.parse(req.body.data))
     return UserControllers.createDoctor(req, res,next)
 })
-router.post("/create-admin", fileUploader.upload.single('file'), (req:Request, res:Response, next:NextFunction)=>{
+router.post("/create-admin",auth(UserRole.ADMIN), fileUploader.upload.single('file'), (req:Request, res:Response, next:NextFunction)=>{
     req.body = UserValidation.createAdminValidationSchema.parse(JSON.parse(req.body.data))
     return UserControllers.createAdmin(req, res, next)
 })
-router.get("/", UserControllers.getAllUsers)
+router.get("/",auth(UserRole.PATIENT), UserControllers.getAllUsers)
 export const UserRoutes = router

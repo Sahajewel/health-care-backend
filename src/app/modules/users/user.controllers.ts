@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import catchAsync from "../../shared/catchAsync";
 import { UserService } from "./user.service";
 import sendResponse from "../../shared/sendResponse";
+import { any } from "zod";
 
 
 const createPatient = catchAsync(async(req: Request, res: Response)=>{
@@ -34,7 +35,7 @@ const createAdmin = catchAsync(async(req: Request, res: Response)=>{
     })
 })
 const getAllUsers = catchAsync(async(req: Request, res: Response)=>{
-    const result = await UserService.getAllUsers()
+   const result = await UserService.getAllUsers(req.query)
     sendResponse(res,{
         statusCode:200,
         success: true,
