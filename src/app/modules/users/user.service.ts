@@ -3,7 +3,7 @@ import { prisma } from "../../shared/prisma";
 import bcryptjs from "bcryptjs"
 import { fileUploader } from "../../helpers/fileUploader";
 import { UserRole } from "@prisma/client";
-import sendResponse from "../../shared/sendResponse";
+import { buildQueryOptions } from "../../helpers/queryBuilder";
 
 const createPatient = async(req: Request)=>{
     if(req.file){
@@ -70,9 +70,31 @@ const createAdmin = async(req: Request)=>{
     })
     return result
 }
-const getAllUsers = async()=>{
-    const allUsers = await prisma.user.findMany();
-   return allUsers
+const getAllUsers = async(query: any)=>{
+    const {page, limit, skip,  filters, orderBy} = buildQueryOptions(query)
+ const [data, total] = await Promise.all([
+    prisma.user.findMany({
+      where: filters,
+     include:{
+        patient: true,
+        doctor: true,
+        admin: true
+     },
+     skip,
+     take:limit,
+     orderBy
+    }),
+    prisma.user.count({where: filters})
+ ])
+  return {
+    meta:{
+        page,
+        limit,
+        total,
+        totalPages: Math.ceil(total/limit),
+    },
+    data
+  }
 }
 export const UserService = {
     createPatient,
