@@ -1,3 +1,4 @@
+import { IJwtPayload } from "./../../type/common";
 import { Request, Response } from "express";
 import catchAsynce from "../../shared/catchAsync";
 import { ScheduServise } from "./schedule.service";
@@ -13,15 +14,21 @@ const createSchedule = catchAsynce(async (req: Request, res: Response) => {
   });
 });
 
-const getAllSchedule = catchAsynce(async (req: Request, res: Response) => {
-  const result = await ScheduServise.getAllSchedule(req.query);
-  sendResponse(res, {
-    statusCode: 200,
-    success: true,
-    message: "Fetch all schedules",
-    data: result,
-  });
-});
+const getAllSchedule = catchAsynce(
+  async (req: Request & { user?: IJwtPayload }, res: Response) => {
+    const user = req.user;
+    const result = await ScheduServise.getAllSchedule(
+      user as IJwtPayload,
+      req.query
+    );
+    sendResponse(res, {
+      statusCode: 200,
+      success: true,
+      message: "Fetch all schedules",
+      data: result,
+    });
+  }
+);
 
 const deleteSchedule = catchAsynce(async (req: Request, res: Response) => {
   const { id } = req.params;
