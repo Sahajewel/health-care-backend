@@ -1,4 +1,4 @@
-import { gte } from "zod";
+import { IJwtPayload } from "./../../type/common";
 import { buildQueryOptions } from "../../helpers/queryBuilder";
 import { prisma } from "../../shared/prisma";
 import { addHours, addMinutes, format } from "date-fns";
@@ -54,17 +54,32 @@ const createSchedule = async (payload: any) => {
   return schedules;
 };
 
-const getAllSchedule = async (query: any) => {
+const getAllSchedule = async (user: IJwtPayload, query: any) => {
   const { page, limit, skip, filters, orderBy } = buildQueryOptions(query);
 
   if (query.startDateTime && query.endDateTime) {
     filters.startDateTime = { gte: new Date(query.startDateTime) };
     filters.endDateTime = { gte: new Date(query.endDateTime) };
   }
+  const doctorSchedules = await prisma.doctorSchedule.findMany({
+    where: {
+      docotr: {
+        email: user.email,
+      },
+    },
+    select: {
+      SchediuleId: true,
+    },
+  });
 
+  const doctorScheduleIds = doctorSchedules.map(
+    (schedule) => schedule.SchediuleId
+  );
+  console.log(doctorSchedules);
   const [data, total] = await Promise.all([
     prisma.schedule.findMany({
       where: filters,
+
       include: {
         doctorSchedule: true,
       },

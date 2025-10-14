@@ -38,5 +38,5 @@ router.post(
     return UserControllers.createAdmin(req, res, next);
   }
 );
-router.get("/", auth(UserRole.PATIENT), UserControllers.getAllUsers);
+router.get("/", UserControllers.getAllUsers);
 export const UserRoutes = router;
