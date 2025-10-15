@@ -3,6 +3,8 @@ import { prisma } from "../../shared/prisma";
 import bcrypt from "bcryptjs";
 import config from "../../../config";
 import { jwtHelper } from "../../helpers/generateToken";
+import { AppError } from "../../errors/AppError";
+import httpStatus from "http-status";
 const login = async (payload: {
   id: string;
   email: string;
@@ -20,7 +22,7 @@ const login = async (payload: {
     user.password
   );
   if (!isCorrectPassword) {
-    throw new Error("Password is incorrect!");
+    throw new AppError(httpStatus.BAD_REQUEST, "Password is incorrect!");
   }
   // if(!config.jwt_secret){
   //     throw new Error("Jwt secret is not configured")
