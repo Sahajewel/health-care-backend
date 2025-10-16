@@ -2,12 +2,15 @@ import express from "express";
 import { DoctorScheduleController } from "./doctorSchedule.controller";
 import auth from "../../middlewares/auth";
 import { UserRole } from "@prisma/client";
+import validateRequest from "../../middlewares/validateRequest";
+import { createDoctorScheduleValidationSchema } from "./doctorSchedule.validation";
 
 const router = express.Router();
 
 router.post(
   "/create-doctorSchedule",
   auth(UserRole.DOCTOR),
+  validateRequest(createDoctorScheduleValidationSchema),
   DoctorScheduleController.createDoctorSchedule
 );
 
