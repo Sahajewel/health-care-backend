@@ -86,5 +86,14 @@ export const buildQueryOptions = (query: any) => {
     }
     filters.OR = orConditions;
   }
-  return { page, limit, skip, sortBy, sortOrder, filters, orderBy };
+  return {
+    page,
+    limit,
+    skip,
+    sortBy,
+    sortOrder,
+    filters,
+    orderBy,
+    search: query.search,
+  };
 };

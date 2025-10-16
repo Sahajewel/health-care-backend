@@ -1,6 +1,7 @@
 import { Prisma } from "@prisma/client";
 import { NextFunction, Request, Response } from "express";
 import httpStatus from "http-status";
+import { ZodError } from "zod";
 
 const globalErrorHandler = (
   err: any,
@@ -31,6 +32,14 @@ const globalErrorHandler = (
     (message = "Prisma client failed to initialize"),
       (error = err.message),
       (statusCode = httpStatus.BAD_REQUEST);
+  } else if (err instanceof ZodError) {
+    message = "Zod error occured";
+
+    // শুধুমাত্র message এর array বানাই
+    const zodErr = err as ZodError<any>;
+    error = zodErr.issues.map((e) => e.message).join(","); // সব message একসাথে comma দিয়ে
+
+    statusCode = httpStatus.BAD_REQUEST;
   }
   res.status(statusCode).json({
     success,
