@@ -4,5 +4,6 @@ import { DoctorController } from "./doctor.controller";
 const router = express.Router();
 
 router.get("/", DoctorController.getDoctors);
+router.patch("/:id", DoctorController.doctorUpdate);
 
 export const DoctorRoutes = router;
