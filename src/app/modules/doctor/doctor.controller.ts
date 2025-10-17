@@ -25,7 +25,19 @@ const doctorUpdate = catchAsynce(async (req: Request, res: Response) => {
     data: result,
   });
 });
+
+const sugessions = catchAsynce(async (req: Request, res: Response) => {
+  const result = await DoctorService.sugessions(req.body);
+  console.log(result);
+  sendResponse(res, {
+    statusCode: 201,
+    success: true,
+    message: "Sugessions created",
+    data: result,
+  });
+});
 export const DoctorController = {
   getDoctors,
   doctorUpdate,
+  sugessions,
 };
