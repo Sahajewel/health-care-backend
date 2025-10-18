@@ -14,3 +14,15 @@
   MALE
   FEMALE
  }
+
+ enum AppointmentStatus {
+    scheduleId
+    INPROGRESS
+    COMPLETED
+    CANCEL
+ }
+
+ enum PaymentStatus {
+    PAID 
+    UNPAID
+ }

@@ -5,6 +5,7 @@ import { DoctorUpdateInput } from "./doctor.interface";
 import { AppError } from "../../errors/AppError";
 import httpStatus from "http-status";
 import { openai } from "../../helpers/openRouter";
+import { extractJsonFromMessage } from "../../helpers/extractJsonFromMessage";
 const getDoctors = async (query: any) => {
   const { page, limit, skip, sortBy, sortOrder, filters, search } =
     buildQueryOptions(query);
@@ -166,8 +167,10 @@ Return your response in JSON format with full individual doctor data.
       },
     ],
   });
-  console.log(doctors);
-  return payload;
+
+  const result = await extractJsonFromMessage(completion.choices[0].message);
+  console.log(result);
+  return result;
 };
 export const DoctorService = {
   getDoctors,
