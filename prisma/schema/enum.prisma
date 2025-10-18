@@ -1,28 +1,28 @@
- enum UserRole {
-  PATIENT
-  DOCTOR
-  ADMIN
- }
+enum UserRole {
+   PATIENT
+   DOCTOR
+   ADMIN
+}
 
- enum UserStatus {
-  ACTIVE
-  INACTIVE
-  DELETE
- }
+enum UserStatus {
+   ACTIVE
+   INACTIVE
+   DELETE
+}
 
- enum Gender {
-  MALE
-  FEMALE
- }
+enum Gender {
+   MALE
+   FEMALE
+}
 
- enum AppointmentStatus {
-    scheduleId
-    INPROGRESS
-    COMPLETED
-    CANCEL
- }
+enum AppointmentStatus {
+   SCHEDULED
+   INPROGRESS
+   COMPLETED
+   CANCEL
+}
 
- enum PaymentStatus {
-    PAID 
-    UNPAID
- }
+enum PaymentStatus {
+   PAID
+   UNPAID
+}
