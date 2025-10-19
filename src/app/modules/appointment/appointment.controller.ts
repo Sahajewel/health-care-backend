@@ -1,13 +1,13 @@
 import { Request, Response } from "express";
 import catchAsynce from "../../shared/catchAsync";
-import { AppoinmentService } from "./appoinment.service";
 import sendResponse from "../../shared/sendResponse";
 import { IJwtPayload } from "../../type/common";
+import { AppointmentService } from "./appoinment.service";
 
 const createAppoinment = catchAsynce(
   async (req: Request & { user?: IJwtPayload }, res: Response) => {
     const user = req.user;
-    const result = await AppoinmentService.createAppoinment(
+    const result = await AppointmentService.createAppointment(
       user as IJwtPayload,
       req.body
     );

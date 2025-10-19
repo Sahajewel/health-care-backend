@@ -9,7 +9,7 @@ const router = express.Router();
 
 router.post(
   "/create-doctorSchedule",
-  auth(UserRole.DOCTOR),
+
   validateRequest(createDoctorScheduleValidationSchema),
   DoctorScheduleController.createDoctorSchedule
 );
