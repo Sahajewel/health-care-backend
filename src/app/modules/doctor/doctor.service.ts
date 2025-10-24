@@ -54,6 +54,7 @@ const getDoctors = async (query: any) => {
       include: {
         user: true,
         doctorSpecialties: true,
+        review: true,
       },
     }),
     prisma.doctor.count({ where }),

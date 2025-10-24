@@ -5,7 +5,12 @@ import { fileUploader } from "../../helpers/fileUploader";
 import auth from "../../middlewares/auth";
 import { UserRole } from "@prisma/client";
 const router = express.Router();
-
+router.get(
+  "/me",
+  auth(UserRole.ADMIN, UserRole.DOCTOR, UserRole.PATIENT),
+  UserControllers.getMyProfile
+);
+router.get("/", UserControllers.getAllUsers);
 router.post(
   "/create-patient",
   fileUploader.upload.single("file"),
@@ -38,5 +43,6 @@ router.post(
     return UserControllers.createAdmin(req, res, next);
   }
 );
-router.get("/", UserControllers.getAllUsers);
+
+router.patch("/:id", auth(UserRole.ADMIN), UserControllers.changeProfileStatus);
 export const UserRoutes = router;

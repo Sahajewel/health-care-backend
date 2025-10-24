@@ -13,7 +13,17 @@ export default {
     api_secret: process.env.CLOUDINARY_API_SECRET,
   },
   jwt_secret: process.env.JWT_SECRET,
+  refresh_token: process.env.REFRESH_TOKEN,
+  jwt_pass_secret: process.env.RESET_PASS_SECRET,
+  reset_pass_expires: process.env.RESET_PASS_EXPIRES,
   jwt_access_expires: process.env.JWT_ACCESS_EXPIRES,
   jwt_refresh_expires: process.env.JWT_REFRESH_EXPIRES,
+  reset_pass_link: process.env.RESET_PASS_LINK,
+  reset_pass_secret: process.env.RESET_PASS_SECRET,
   openRouterApiKey: process.env.OPENROUTER_API_KEY,
+  stripe_secret_key: process.env.STRIPE_SECRET_KEY,
+  emailSender: {
+    email: process.env.EMAIL_SENDER_EMAIL,
+    app_pass: process.env.EMAIL_SENDER_PASS_APP,
+  },
 };
