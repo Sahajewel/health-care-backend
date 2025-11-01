@@ -22,6 +22,7 @@ export default {
   reset_pass_secret: process.env.RESET_PASS_SECRET,
   openRouterApiKey: process.env.OPENROUTER_API_KEY,
   stripe_secret_key: process.env.STRIPE_SECRET_KEY,
+  stripe_webhook_secret: process.env.STRIPE_WEBHOOK_SECRET,
   emailSender: {
     email: process.env.EMAIL_SENDER_EMAIL,
     app_pass: process.env.EMAIL_SENDER_PASS_APP,

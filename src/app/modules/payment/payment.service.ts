@@ -3,6 +3,7 @@ import { prisma } from "../../shared/prisma";
 import { PaymentStatus } from "@prisma/client";
 
 const handleStripeWebhookEvent = async (event: Stripe.Event) => {
+  console.log("console from webhook", event);
   switch (event.type) {
     case "checkout.session.completed": {
       const session = event.data.object as any;

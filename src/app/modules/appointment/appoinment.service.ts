@@ -8,7 +8,7 @@ const createAppointment = async (
   payload: { doctorId: string; scheduleId: string }
 ) => {
   // Check if patient exists, if not throw a meaningful error
-  const patientData = await prisma.patient.findUnique({
+  const patientData = await prisma.patient.findFirstOrThrow({
     where: {
       email: user.email,
     },
@@ -94,7 +94,7 @@ const createAppointment = async (
       success_url: `https://sahajewel.com/`,
       cancel_url: `https://github.com/Apollo-Level2-Web-Dev/ph-health-care-server/blob/part-7/src/app/modules/appointment/appointment.service.ts`,
     });
-    console.log(session);
+console.log("checking webhook")
     return {
       appointmentData: appointmentData.id,
       payment: paymentData,

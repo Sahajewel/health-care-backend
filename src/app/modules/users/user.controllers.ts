@@ -5,6 +5,9 @@ import sendResponse from "../../shared/sendResponse";
 import { IJwtPayload } from "../../type/common";
 import httpStatus from "http-status";
 import { prisma } from "../../shared/prisma";
+import { number } from "zod";
+import pick from "../../helpers/pick";
+import { userFilterableFields } from "./user.constant";
 const createPatient = catchAsync(async (req: Request, res: Response) => {
   const result = await UserService.createPatient(req);
 
@@ -35,12 +38,16 @@ const createAdmin = catchAsync(async (req: Request, res: Response) => {
   });
 });
 const getAllUsers = catchAsync(async (req: Request, res: Response) => {
-  const result = await UserService.getAllUsers(req.query);
+  const filters = pick(req.query, userFilterableFields);
+  const options = pick(req.query, ["page", "limit", "sortBy", "sortOrder"]);
+
+  const result = await UserService.getAllUsers(filters, options);
   sendResponse(res, {
     statusCode: 200,
     success: true,
     message: "Retreived all users",
-    data: result,
+    meta: result.meta,
+    data: result.data,
   });
 });
 

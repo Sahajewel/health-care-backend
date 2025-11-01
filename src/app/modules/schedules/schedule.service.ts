@@ -4,7 +4,7 @@ import { prisma } from "../../shared/prisma";
 import { addHours, addMinutes, format } from "date-fns";
 const createSchedule = async (payload: any) => {
   const { startTime, endTime, startDate, endDate } = payload;
-  const intervalTime = 30;
+  const intervalTime = 3000;
   const schedules = [];
   const currentDate = new Date(startDate);
   const lastDate = new Date(endDate);

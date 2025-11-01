@@ -13,7 +13,7 @@ const app: Application = express();
 app.post(
   "/webhook",
   express.raw({ type: "application/json" }),
-  PaymentController.handleStripeWebhookEvent
+  PaymentController.handleStripeWebHookEvent
 );
 
 // Now other middleware
